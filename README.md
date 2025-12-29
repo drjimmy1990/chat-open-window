@@ -16,8 +16,8 @@ This project provides a conversational AI assistant for "Blade Properties" that 
 
 | Project Name | Code | Description |
 |--------------|------|-------------|
-| The Downtown Skyscraper | `Project-A` | A flagship skyscraper development |
-| The Seaside Villa | `Project-B` | A coastal luxury villa project |
+| The Downtown Skyscraper | `Project-A` | A flagship 85-floor skyscraper development |
+| The Seaside Villa | `Project-B` | A luxury beachfront villa collection |
 
 ---
 
@@ -42,7 +42,7 @@ flowchart LR
 1. **Frontend Chat Widget** – HTML/CSS/JavaScript chat interface
 2. **n8n Workflow Backend** – Processes messages and routes responses
 3. **Google Gemini AI** – Natural language understanding for project identification
-4. **Project Gallery Pages** – Static HTML pages with project content
+4. **Project Gallery Pages** – Premium HTML pages with project content
 
 ---
 
@@ -50,13 +50,47 @@ flowchart LR
 
 ```
 CHAT OPEN WINDOW/
+├── config.js              # ⚙️ Centralized configuration (webhook URL, messages)
 ├── index-newtab.html      # Chat widget (opens projects in new tab)
 ├── index-newwindow.html   # Chat widget (opens projects in popup window)
 ├── separated.html         # Chat widget (opens projects in modal/iframe)
-├── project-a.html         # Project gallery for "The Downtown Skyscraper"
+├── project-a.html         # 🏙️ The Downtown Skyscraper gallery
+├── project-b.html         # 🏖️ The Seaside Villa gallery
 ├── n8n-workflow.json      # n8n workflow export (backend logic)
 └── README.md              # This documentation
 ```
+
+---
+
+## ⚙️ Configuration
+
+All settings are centralized in **`config.js`** for easy editing:
+
+```javascript
+const CONFIG = {
+    // n8n Webhook URL - Update this to your n8n instance
+    webhookUrl: 'https://n8n.ai-eg.online/webhook/YOUR-WEBHOOK-ID',
+    
+    // Bot settings
+    botName: 'Blade Properties Assistant',
+    welcomeMessage: 'Hello! Ask me to show you "The Downtown Skyscraper" or "The Seaside Villa".',
+    
+    // Messages
+    messages: {
+        actionResponse: "Of course! I'll open the page for that project.",
+        modalActionResponse: "Of course! Opening the project gallery for you.",
+        unexpectedFormat: "I received a response, but it had an unexpected format.",
+        errorMessage: "Sorry, there was an issue processing the response."
+    }
+};
+```
+
+### Quick Setup
+
+1. Open `config.js`
+2. Update `webhookUrl` with your n8n webhook URL
+3. Customize `botName` and messages as needed
+4. Done! All chat widgets will use the new settings
 
 ---
 
@@ -70,13 +104,34 @@ CHAT OPEN WINDOW/
 | `index-newwindow.html` | Opens in popup window (900x700) | Focused viewing |
 | `separated.html` | Opens in overlay modal/iframe | Single-page experience |
 
+### 🏙️ Project A: The Downtown Skyscraper
+
+Premium gallery page featuring:
+- Hero section with full-width imagery
+- Key stats (85 floors, 420m height, 250 units)
+- Premium amenities grid (pool, fitness, dining, etc.)
+- Image gallery with hover effects
+- Call-to-action section
+
+### 🏖️ Project B: The Seaside Villa
+
+Coastal luxury gallery featuring:
+- Beachfront hero with wave divider
+- Beach stats section
+- Villa collection cards (Pearl, Coral, Azure)
+- Resort amenities grid
+- Responsive image gallery
+- Dual CTA buttons
+
 ### 🤖 AI Capabilities
 
 - **Project Identification** – Recognizes project names, aliases, and context
 - **Intent Classification** – Distinguishes between project requests and general chat
 - **Action/Text Response** – Returns structured JSON for frontend handling
 
-### 📤 Response Types
+---
+
+## 📤 Response Types
 
 ```json
 // Action Response (opens a page)
@@ -105,19 +160,11 @@ CHAT OPEN WINDOW/
 5. **Edit Fields** – Constructs the response payload
 6. **Respond to Webhook** – Returns JSON to the frontend
 
-### Webhook Endpoint
+### Webhook Request
 
-```
-POST https://n8n.ai-eg.online/webhook/49ef809d-d316-4068-ba46-a254084128ce
-```
-
-### Request Body
-
-```json
-{
-  "message": "Show me the skyscraper project"
-}
-```
+| Field | Type | Description |
+|-------|------|-------------|
+| `message` | string | User's chat message |
 
 ---
 
@@ -135,26 +182,19 @@ POST https://n8n.ai-eg.online/webhook/49ef809d-d316-4068-ba46-a254084128ce
 2. Go to **Workflows** → **Import from File**
 3. Upload `n8n-workflow.json`
 4. Configure the **Google Gemini Chat Model** node with your API key
-5. Update webhook URLs if using a different n8n instance
+5. Activate the workflow
 
-### Step 2: Update Frontend Configuration
+### Step 2: Update Configuration
 
-In each HTML file, update the webhook URL:
+Edit `config.js` and update the webhook URL:
 
 ```javascript
-const webhookUrl = 'https://YOUR-N8N-INSTANCE/webhook/YOUR-WEBHOOK-ID';
+webhookUrl: 'https://YOUR-N8N-INSTANCE/webhook/YOUR-WEBHOOK-ID',
 ```
 
-### Step 3: Deploy the Frontend
+### Step 3: Add Project Gallery URLs
 
-Host the HTML files on any web server:
-
-- **Local development**: Open files directly in browser or use `python -m http.server`
-- **Production**: Deploy to any static hosting (Netlify, Vercel, GitHub Pages, etc.)
-
-### Step 4: Add Project Gallery URLs
-
-In the n8n workflow "Edit Fields" nodes, update the URLs:
+In the n8n workflow "Edit Fields" nodes, update the URLs to your hosted gallery pages:
 
 ```javascript
 // Edit Fields2 (Project-A)
@@ -164,13 +204,24 @@ In the n8n workflow "Edit Fields" nodes, update the URLs:
 "content": "https://your-domain.com/project-b.html"
 ```
 
+### Step 4: Deploy the Frontend
+
+Host the HTML files on any web server:
+
+- **Local development**: Use `python -m http.server` or VS Code Live Server
+- **Production**: Deploy to Netlify, Vercel, GitHub Pages, or any static hosting
+
+> ⚠️ **Important**: When opening HTML files directly from the filesystem, some browsers block the `config.js` import. Use a local server for development.
+
 ---
 
 ## 💡 Customization
 
 ### Adding New Projects
 
-1. **Update AI Agent System Message** (in n8n):
+1. **Create Gallery Page** – Add `project-c.html` with the project content
+
+2. **Update AI Agent System Message** (in n8n):
    ```
    The available projects are:
    - "The Downtown Skyscraper" which has the code 'Project-A'.
@@ -178,11 +229,9 @@ In the n8n workflow "Edit Fields" nodes, update the URLs:
    - "The Mountain Resort" which has the code 'Project-C'.  ← ADD NEW
    ```
 
-2. **Add Switch Condition** – Add a new branch for `Project-C`
+3. **Add Switch Condition** – Add a new branch for `Project-C`
 
-3. **Create Edit Fields Node** – Configure the URL for the new project
-
-4. **Create Gallery Page** – Add `project-c.html` with the project content
+4. **Create Edit Fields Node** – Configure the URL for the new project
 
 ### Styling the Chat Widget
 
@@ -197,23 +246,6 @@ All styling is contained within each HTML file's `<style>` block. Key classes:
 
 ---
 
-## 🔧 API Reference
-
-### Webhook Request
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `message` | string | User's chat message |
-
-### Webhook Response
-
-| Field | Type | Values | Description |
-|-------|------|--------|-------------|
-| `type` | string | `action`, `text` | Response type |
-| `content` | string | URL or message | Payload content |
-
----
-
 ## 📋 Example Interactions
 
 | User Says | AI Detects | Result |
@@ -221,8 +253,8 @@ All styling is contained within each HTML file's `<style>` block. Key classes:
 | "Show me the skyscraper" | Project-A | Opens skyscraper gallery |
 | "I want to see the villa" | Project-B | Opens villa gallery |
 | "Tell me about downtown tower" | Project-A | Opens skyscraper gallery |
-| "Hello, how are you?" | N/A | Text response: "sorry" |
-| "What projects do you have?" | N/A | Text response: "sorry" |
+| "Show me the beach property" | Project-B | Opens villa gallery |
+| "Hello, how are you?" | N/A | Text response |
 
 ---
 

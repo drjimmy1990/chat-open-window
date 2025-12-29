@@ -4,14 +4,14 @@
             "parameters": {
                 "httpMethod": "POST",
                 "path": "6e23aba0-815f-4909-8f46-1c6e19b15b57",
-                "responseMode": "lastNode",
+                "responseMode": "responseNode",
                 "options": {}
             },
             "type": "n8n-nodes-base.webhook",
             "typeVersion": 2,
             "position": [
-                -320,
-                192
+                -528,
+                128
             ],
             "id": "ff734d62-1001-4201-adb5-789e0cdd311f",
             "name": "Webhook",
@@ -22,13 +22,13 @@
                 "promptType": "define",
                 "text": "={{ $json.body.message }}",
                 "options": {
-                    "systemMessage": "You are a project identifier. Your ONLY job is to analyze the user's message and determine which project they are asking about.\n\nThe available projects are:\n- \"The Downtown Skyscraper\" which has the code 'Project-A'.\n- \"The Seaside Villa\" which has the code 'Project-B'.\n\nIf the user mentions the skyscraper, respond with ONLY the text: Project-A\nIf the user mentions the villa, respond with ONLY the text: Project-B\n\nIf you cannot determine which project they mean, or if they are just making small talk, respond with ONLY the text: respond normaly"
+                    "systemMessage": "=You are a friendly and professional real estate assistant for 'Blade Properties'. Your name is Alex.\n\nYour primary role is to have a helpful conversation with clients. You can answer questions about the company, the types of properties we offer, and provide general assistance.\n\nYou have a special ability: you can open project pages for the client. You should ONLY use this ability when the user explicitly asks to see a project's page, images, gallery, photos, or a virtual tour.\n\nThe available projects are:\n- The Downtown Skyscraper\n- The Seaside Villa\n\n**YOUR RESPONSE RULES:**\n\n1.  **FOR NORMAL CONVERSATION:** If the user is just chatting or asking general questions (e.g., \"Hello\", \"What properties do you have?\", \"Tell me about the skyscraper\"), respond with a helpful, conversational answer in plain text.\n\n2.  **FOR ACTION REQUESTS:** If the user asks to see images/photos/page for a specific project, you MUST respond in a special JSON format. Do not add any other text before or after the JSON.\n\n    The JSON format is:\n    {\"action\": \"open_page\", \"project\": \"PROJECT_CODE\"}\n\n    The available PROJECT_CODEs are:\n    - 'Project-A' for The Downtown Skyscraper\n    - 'Project-B' for The Seaside Villa\n\n**EXAMPLES:**\n- User asks: \"Hi there\"\n  Your response: Hello! I'm Alex, the assistant for Blade Properties. How can I help you today?\n- User asks: \"Can you tell me more about the skyscraper?\"\n  Your response: Of course! The Downtown Skyscraper is our flagship luxury high-rise, featuring state-of-the-art amenities and stunning city views. Would you like to see the gallery for it?\n- User asks: \"Show me the images for the skyscraper\"\n  Your response: {\"action\": \"open_page\", \"project\": \"Project-A\"}\n- User asks: \"I want to see the villa page\"\n  Your response: {\"action\": \"open_page\", \"project\": \"Project-B\"}"
                 }
             },
             "type": "@n8n/n8n-nodes-langchain.agent",
             "typeVersion": 2,
             "position": [
-                0,
+                -176,
                 64
             ],
             "id": "ca8765e0-7b34-406e-a7fa-cdbefb2ca6aa",
@@ -36,7 +36,6 @@
         },
         {
             "parameters": {
-                "modelName": "models/gemini-2.5-flash-preview-04-17",
                 "options": {}
             },
             "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
@@ -49,8 +48,8 @@
             "name": "Google Gemini Chat Model",
             "credentials": {
                 "googlePalmApi": {
-                    "id": "N12Ltv1DW0TN4fL2",
-                    "name": "Google Gemini(PaLM)easy"
+                    "id": "KFjbrLT6jbTkz70r",
+                    "name": "rockdash2"
                 }
             }
         },
@@ -67,7 +66,7 @@
                         {
                             "id": "3f301c91-b4e8-4828-be22-9b8a735a18ec",
                             "name": "content",
-                            "value": "https://touching-reasonably-rooster.ngrok-free.app/",
+                            "value": "http://localhost:8080/project-b.html",
                             "type": "string"
                         }
                     ]
@@ -97,8 +96,8 @@
                                 },
                                 "conditions": [
                                     {
-                                        "leftValue": "={{ $json.output }}",
-                                        "rightValue": "Project-A",
+                                        "leftValue": "={{ $json.content }}",
+                                        "rightValue": "=project-a.html",
                                         "operator": {
                                             "type": "string",
                                             "operation": "equals"
@@ -120,8 +119,8 @@
                                 "conditions": [
                                     {
                                         "id": "6bbf6303-e4ac-4d96-a1c9-b4729613a556",
-                                        "leftValue": "={{ $json.output }}",
-                                        "rightValue": "Project-B",
+                                        "leftValue": "={{ $json.content }}",
+                                        "rightValue": "project-b.html",
                                         "operator": {
                                             "type": "string",
                                             "operation": "equals",
@@ -156,7 +155,7 @@
             "typeVersion": 1.4,
             "position": [
                 1648,
-                144
+                384
             ],
             "id": "196dc46c-12b6-4dbe-9a5e-8008ff39e402",
             "name": "Respond to Webhook1"
@@ -197,13 +196,13 @@
                         {
                             "id": "49d1dc20-da1a-4db2-8fa9-685171ca9f52",
                             "name": "type",
-                            "value": "text",
+                            "value": "={{ $json.type }}",
                             "type": "string"
                         },
                         {
                             "id": "849eba36-319a-4c2b-91b9-ad314e273eeb",
                             "name": "content",
-                            "value": "sorry",
+                            "value": "={{ $json.content }}",
                             "type": "string"
                         }
                     ]
@@ -218,6 +217,33 @@
             ],
             "id": "32f5a41f-8386-452d-a855-04fa3b2221fd",
             "name": "Edit Fields4"
+        },
+        {
+            "parameters": {
+                "jsCode": "// Get the text output from the AI Agent node directly.\n// This is the only line that needs to change.\nconst aiResponseText = $('AI Agent').item.json.output;\n\n// Create a default item to return\nconst returnItem = {\n  json: {}\n};\n\ntry {\n  // Try to parse the AI's response as JSON\n  const parsedData = JSON.parse(aiResponseText);\n\n  // If it's a valid JSON and the action is 'open_page'...\n  if (parsedData && parsedData.action === 'open_page') {\n    let url = '';\n    if (parsedData.project === 'Project-A') {\n      url = 'project-a.html';\n    } else if (parsedData.project === 'Project-B') {\n      url = 'https://coolify.io';\n    }\n    \n    if (url) {\n      returnItem.json.type = 'action';\n      returnItem.json.content = url;\n    } else {\n      returnItem.json.type = 'text';\n      returnItem.json.content = \"I found the project but the code was invalid.\";\n    }\n\n  } else {\n    // This could happen if the AI returns JSON but not the expected format\n    throw new Error(\"Not a valid action JSON.\");\n  }\n\n} catch (error) {\n  // If JSON.parse fails, it's a plain text conversation\n  returnItem.json.type = 'text';\n  returnItem.json.content = aiResponseText;\n}\n\n// ALWAYS return the final structured item\nreturn [returnItem];"
+            },
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                208,
+                128
+            ],
+            "id": "e68108c0-872d-481d-84d8-a8a01af2187e",
+            "name": "Code in JavaScript"
+        },
+        {
+            "parameters": {
+                "sessionIdType": "customKey",
+                "sessionKey": "=10"
+            },
+            "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+            "typeVersion": 1.3,
+            "position": [
+                112,
+                432
+            ],
+            "id": "f61eebbd-a2ed-4fe7-a774-317c2ca325c0",
+            "name": "Simple Memory"
         }
     ],
     "connections": {
@@ -236,7 +262,7 @@
             "main": [
                 [
                     {
-                        "node": "Switch1",
+                        "node": "Code in JavaScript",
                         "type": "main",
                         "index": 0
                     }
@@ -311,37 +337,68 @@
                     }
                 ]
             ]
+        },
+        "Code in JavaScript": {
+            "main": [
+                [
+                    {
+                        "node": "Switch1",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Simple Memory": {
+            "ai_memory": [
+                [
+                    {
+                        "node": "AI Agent",
+                        "type": "ai_memory",
+                        "index": 0
+                    }
+                ]
+            ]
         }
     },
     "pinData": {
         "Webhook": [
             {
                 "headers": {
-                    "host": "n8n.ai-eg.online",
-                    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
-                    "content-length": "16",
-                    "accept": "*/*",
-                    "accept-encoding": "gzip, deflate, br, zstd",
-                    "accept-language": "en-US,en;q=0.9,ar;q=0.8",
-                    "content-type": "application/json",
-                    "origin": "null",
+                    "host": "n8n.ai4eg.com",
+                    "x-real-ip": "172.70.108.105",
+                    "x-real-port": "12259",
+                    "x-forwarded-for": "41.235.253.221, 172.70.108.105",
+                    "remote-host": "172.70.108.105",
+                    "connection": "upgrade",
+                    "content-length": "15",
                     "priority": "u=1, i",
-                    "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",
-                    "sec-ch-ua-mobile": "?0",
                     "sec-ch-ua-platform": "\"Windows\"",
-                    "sec-fetch-dest": "empty",
-                    "sec-fetch-mode": "cors",
+                    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",
+                    "sec-ch-ua": "\"Google Chrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+                    "content-type": "application/json",
+                    "sec-ch-ua-mobile": "?0",
+                    "accept": "*/*",
+                    "origin": "http://localhost:8080",
                     "sec-fetch-site": "cross-site",
-                    "x-forwarded-for": "41.235.221.231",
-                    "x-forwarded-host": "n8n.ai-eg.online",
+                    "sec-fetch-mode": "cors",
+                    "sec-fetch-dest": "empty",
+                    "referer": "http://localhost:8080/",
+                    "accept-encoding": "gzip, br",
+                    "accept-language": "en-US,en;q=0.9,ar;q=0.8,id;q=0.7",
+                    "cf-ray": "9b56b95a3903e288-MRS",
+                    "cdn-loop": "cloudflare; loops=1",
+                    "cf-connecting-ip": "41.235.253.221",
+                    "cf-ipcountry": "EG",
+                    "cf-visitor": "{\"scheme\":\"https\"}",
                     "x-forwarded-proto": "https"
                 },
                 "params": {},
                 "query": {},
                 "body": {
-                    "message": "hi"
+                    "message": "1"
                 },
-                "webhookUrl": "https://n8n.ai-eg.online/webhook/49ef809d-d316-4068-ba46-a254084128ce",
+                "webhookUrl": "https://n8n.ai4eg.com/webhook/6e23aba0-815f-4909-8f46-1c6e19b15b57",
                 "executionMode": "production"
             }
         ]

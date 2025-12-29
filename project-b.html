@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Seaside Villa | Blade Properties</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0c3b5e;
+            --secondary: #1a5f7a;
+            --accent: #57c5b6;
+            --sand: #f5e6d3;
+            --gold: #d4af37;
+            --text: #ffffff;
+            --text-dark: #2c3e50;
+            --text-muted: #a0c4d4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 80vh;
+            overflow: hidden;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.7) saturate(1.2);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 80px 40px;
+            background: linear-gradient(transparent, rgba(12, 59, 94, 0.95));
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent) 0%, #3a9188 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 600;
+            margin-bottom: 16px;
+            line-height: 1.1;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            line-height: 1.7;
+        }
+
+        /* Wave Divider */
+        .wave-divider {
+            background: var(--sand);
+            padding-top: 50px;
+            margin-top: -50px;
+        }
+
+        .wave-divider svg {
+            display: block;
+            width: 100%;
+            height: 80px;
+        }
+
+        /* Beach Stats */
+        .beach-stats {
+            background: var(--sand);
+            color: var(--text-dark);
+            padding: 60px 40px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .stat-item {
+            position: relative;
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #7a8a8a;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Content Section */
+        .content {
+            padding: 80px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 500;
+            margin-bottom: 28px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 60px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .description {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            color: var(--text-muted);
+            margin-bottom: 50px;
+            max-width: 800px;
+        }
+
+        /* Villa Types */
+        .villa-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .villa-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .villa-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .villa-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .villa-content {
+            padding: 28px;
+        }
+
+        .villa-type {
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .villa-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .villa-details {
+            display: flex;
+            gap: 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .villa-price {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--gold);
+        }
+
+        /* Features */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 50px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: background 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .feature-emoji {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .feature-text h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .feature-text p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Gallery */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            grid-template-rows: repeat(2, 200px);
+            gap: 16px;
+            margin-top: 50px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .gallery-item:nth-child(1) {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .gallery-item:nth-child(2) {
+            grid-column: span 2;
+        }
+
+        .gallery-item:nth-child(3) {
+            grid-column: span 2;
+        }
+
+        .gallery-item:nth-child(4) {
+            grid-column: span 2;
+        }
+
+        .gallery-item:nth-child(5) {
+            grid-column: span 2;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            margin-top: 80px;
+            padding: 60px;
+            background: linear-gradient(135deg, rgba(87, 197, 182, 0.2) 0%, rgba(26, 95, 122, 0.3) 100%);
+            border: 1px solid rgba(87, 197, 182, 0.3);
+            border-radius: 24px;
+            text-align: center;
+        }
+
+        .cta-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .cta-section p {
+            color: var(--text-muted);
+            margin-bottom: 28px;
+            font-size: 1.1rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 16px 36px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .cta-btn.primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .cta-btn.primary:hover {
+            background: #4ab3a5;
+            transform: translateY(-2px);
+        }
+
+        .cta-btn.secondary {
+            background: transparent;
+            color: var(--text);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .cta-btn.secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 50px 40px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 60px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .gallery {
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: auto;
+            }
+
+            .gallery-item:nth-child(1) {
+                grid-column: span 2;
+                grid-row: span 1;
+                height: 250px;
+            }
+
+            .gallery-item {
+                height: 180px;
+                grid-column: span 1 !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <img src="https://images.pexels.com/photos/1268871/pexels-photo-1268871.jpeg" alt="Seaside Villa"
+            class="hero-image">
+        <div class="hero-overlay">
+            <span class="badge">🌊 Beachfront Living</span>
+            <h1>The Seaside Villa</h1>
+            <p>Experience coastal luxury with private beach access, stunning ocean views, and Mediterranean-inspired
+                architecture</p>
+        </div>
+    </section>
+
+    <!-- Wave Divider -->
+    <div class="wave-divider">
+        <svg viewBox="0 0 1200 80" preserveAspectRatio="none">
+            <path d="M0,40 C150,80 350,0 600,40 C850,80 1050,0 1200,40 L1200,0 L0,0 Z" fill="#1a5f7a" />
+        </svg>
+    </div>
+
+    <!-- Beach Stats -->
+    <section class="beach-stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-icon">🏖️</div>
+                <div class="stat-value">500m</div>
+                <div class="stat-label">Private Beach</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">🏠</div>
+                <div class="stat-value">24</div>
+                <div class="stat-label">Exclusive Villas</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">🌅</div>
+                <div class="stat-value">180°</div>
+                <div class="stat-label">Ocean Views</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">🌴</div>
+                <div class="stat-value">5</div>
+                <div class="stat-label">Acres of Gardens</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <section class="content">
+        <h2 class="section-title">Coastal Paradise</h2>
+        <p class="description">
+            The Seaside Villa collection offers an unparalleled coastal living experience. Each villa is
+            thoughtfully designed to harmonize with its natural surroundings, featuring open-plan living spaces
+            that flow seamlessly to private terraces overlooking the Mediterranean Sea. Wake up to the sound of
+            waves and enjoy your morning coffee as dolphins play in the distance.
+        </p>
+
+        <!-- Villa Types -->
+        <h2 class="section-title">Villa Collection</h2>
+        <div class="villa-types">
+            <div class="villa-card">
+                <img src="https://images.pexels.com/photos/2102587/pexels-photo-2102587.jpeg" alt="Pearl Villa"
+                    class="villa-image">
+                <div class="villa-content">
+                    <div class="villa-type">2 Bedroom</div>
+                    <div class="villa-name">Pearl Villa</div>
+                    <div class="villa-details">
+                        <span>🛏️ 2 Beds</span>
+                        <span>🚿 2 Baths</span>
+                        <span>📐 180m²</span>
+                    </div>
+                    <div class="villa-price">From $1.2M</div>
+                </div>
+            </div>
+            <div class="villa-card">
+                <img src="https://images.pexels.com/photos/1428348/pexels-photo-1428348.jpeg" alt="Coral Villa"
+                    class="villa-image">
+                <div class="villa-content">
+                    <div class="villa-type">3 Bedroom</div>
+                    <div class="villa-name">Coral Villa</div>
+                    <div class="villa-details">
+                        <span>🛏️ 3 Beds</span>
+                        <span>🚿 3 Baths</span>
+                        <span>📐 260m²</span>
+                    </div>
+                    <div class="villa-price">From $1.8M</div>
+                </div>
+            </div>
+            <div class="villa-card">
+                <img src="https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg" alt="Azure Villa"
+                    class="villa-image">
+                <div class="villa-content">
+                    <div class="villa-type">4 Bedroom</div>
+                    <div class="villa-name">Azure Villa</div>
+                    <div class="villa-details">
+                        <span>🛏️ 4 Beds</span>
+                        <span>🚿 4 Baths</span>
+                        <span>📐 380m²</span>
+                    </div>
+                    <div class="villa-price">From $2.5M</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features -->
+        <h2 class="section-title" style="margin-top: 80px;">Resort Amenities</h2>
+        <div class="features-grid">
+            <div class="feature-item">
+                <span class="feature-emoji">🏊</span>
+                <div class="feature-text">
+                    <h4>Private Infinity Pools</h4>
+                    <p>Each villa includes a stunning infinity pool overlooking the ocean</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <span class="feature-emoji">⛵</span>
+                <div class="feature-text">
+                    <h4>Private Marina</h4>
+                    <p>Exclusive berths for yachts up to 60 feet with full-service facilities</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <span class="feature-emoji">🍷</span>
+                <div class="feature-text">
+                    <h4>Beach Club</h4>
+                    <p>Oceanfront dining, cocktail lounge, and sunset entertainment</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <span class="feature-emoji">💆</span>
+                <div class="feature-text">
+                    <h4>Wellness Spa</h4>
+                    <p>Full-service spa with ocean therapy rooms and holistic treatments</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <span class="feature-emoji">🎾</span>
+                <div class="feature-text">
+                    <h4>Sports Facilities</h4>
+                    <p>Tennis courts, water sports center, and beachfront yoga pavilion</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <span class="feature-emoji">🛎️</span>
+                <div class="feature-text">
+                    <h4>Concierge Service</h4>
+                    <p>24/7 personal concierge for all your vacation and daily needs</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gallery -->
+        <h2 class="section-title" style="margin-top: 80px;">Gallery</h2>
+        <div class="gallery">
+            <div class="gallery-item">
+                <img src="https://images.pexels.com/photos/1450363/pexels-photo-1450363.jpeg" alt="Beach View">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.pexels.com/photos/1571468/pexels-photo-1571468.jpeg" alt="Living Room">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg" alt="Bedroom">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.pexels.com/photos/261327/pexels-photo-261327.jpeg" alt="Pool">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.pexels.com/photos/189296/pexels-photo-189296.jpeg" alt="Terrace">
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h3>Discover Your Coastal Sanctuary</h3>
+            <p>Limited villa collection now available. Secure your piece of paradise today.</p>
+            <div class="cta-buttons">
+                <a href="#" class="cta-btn primary">Schedule a Visit</a>
+                <a href="#" class="cta-btn secondary">Download Brochure</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2025 Blade Properties. All rights reserved. | The Seaside Villa Collection
+    </footer>
+</body>
+
+</html>

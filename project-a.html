@@ -1,19 +1,375 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Project A Gallery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Downtown Skyscraper | Blade Properties</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: sans-serif; margin: 20px; text-align: center; }
-        h1 { color: #333; }
-        p { color: #666; }
-        img { max-width: 100%; height: auto; border-radius: 8px; margin-top: 15px; }
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #e94560;
+            --gold: #d4af37;
+            --text: #ffffff;
+            --text-muted: #a0a0a0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 70vh;
+            overflow: hidden;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.6);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 60px 40px;
+            background: linear-gradient(transparent, rgba(26, 26, 46, 0.95));
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--gold);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 12px;
+            line-height: 1.1;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            padding: 60px 40px;
+            background: rgba(255, 255, 255, 0.03);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Content Section */
+        .content {
+            padding: 60px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+        }
+
+        /* Gallery */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.02);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            font-weight: 500;
+        }
+
+        /* Features */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-4px);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .feature-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .feature-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* CTA */
+        .cta {
+            margin-top: 60px;
+            padding: 40px;
+            background: linear-gradient(135deg, var(--accent) 0%, #c73e54 100%);
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .cta h3 {
+            font-size: 1.75rem;
+            margin-bottom: 12px;
+        }
+
+        .cta p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 24px;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background: white;
+            color: var(--accent);
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.2s ease;
+        }
+
+        .cta-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
     </style>
 </head>
+
 <body>
-    <h1>The Downtown Skyscraper Gallery</h1>
-    <p>Here are the latest images and renders for our flagship project.</p>
-    <img src="https://images.pexels.com/photos/235615/pexels-photo-235615.jpeg" alt="Skyscraper Image 1">
-    <img src="https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg" alt="Skyscraper Image 2">
+    <!-- Hero Section -->
+    <section class="hero">
+        <img src="https://images.pexels.com/photos/235615/pexels-photo-235615.jpeg" alt="Downtown Skyscraper"
+            class="hero-image">
+        <div class="hero-overlay">
+            <span class="badge">🏆 Flagship Project</span>
+            <h1>The Downtown Skyscraper</h1>
+            <p>A landmark of modern architecture rising 85 floors above the city's financial district</p>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats">
+        <div class="stat-item">
+            <div class="stat-value">85</div>
+            <div class="stat-label">Floors</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">420m</div>
+            <div class="stat-label">Height</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">250</div>
+            <div class="stat-label">Luxury Units</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">2025</div>
+            <div class="stat-label">Completion</div>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <section class="content">
+        <h2 class="section-title">About the Project</h2>
+        <p class="description">
+            The Downtown Skyscraper redefines urban living with its state-of-the-art design and world-class amenities.
+            Located in the heart of the financial district, this architectural marvel offers panoramic city views,
+            premium finishes, and exclusive access to a private residents' club. Each residence is thoughtfully designed
+            to maximize natural light and living space, featuring floor-to-ceiling windows and smart home technology.
+        </p>
+
+        <!-- Features -->
+        <h2 class="section-title">Premium Amenities</h2>
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🏊</div>
+                <div class="feature-title">Infinity Pool</div>
+                <div class="feature-desc">70th floor rooftop pool with breathtaking sunset views</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🏋️</div>
+                <div class="feature-title">Fitness Center</div>
+                <div class="feature-desc">24/7 state-of-the-art gym with personal trainers</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🍽️</div>
+                <div class="feature-title">Private Dining</div>
+                <div class="feature-desc">Michelin-star chef's table for exclusive events</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🚗</div>
+                <div class="feature-title">Valet Parking</div>
+                <div class="feature-desc">Complimentary valet with EV charging stations</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <div class="feature-title">24/7 Security</div>
+                <div class="feature-desc">Biometric access and round-the-clock concierge</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌿</div>
+                <div class="feature-title">Sky Garden</div>
+                <div class="feature-desc">Lush rooftop gardens with meditation spaces</div>
+            </div>
+        </div>
+
+        <!-- Gallery -->
+        <h2 class="section-title" style="margin-top: 60px;">Project Gallery</h2>
+        <div class="gallery">
+            <div class="gallery-item">
+                <img src="https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg" alt="Exterior View">
+                <div class="gallery-caption">Exterior View</div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.pexels.com/photos/1838640/pexels-photo-1838640.jpeg" alt="Lobby">
+                <div class="gallery-caption">Grand Lobby</div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg" alt="Living Space">
+                <div class="gallery-caption">Luxury Living Space</div>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta">
+            <h3>Ready to Elevate Your Lifestyle?</h3>
+            <p>Schedule a private viewing of our exclusive show units</p>
+            <a href="#" class="cta-btn">Book a Tour</a>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2025 Blade Properties. All rights reserved.
+    </footer>
 </body>
+
 </html>
