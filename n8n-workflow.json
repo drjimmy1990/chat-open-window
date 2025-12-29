@@ -1,0 +1,353 @@
+{
+    "nodes": [
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "6e23aba0-815f-4909-8f46-1c6e19b15b57",
+                "responseMode": "lastNode",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 2,
+            "position": [
+                -320,
+                192
+            ],
+            "id": "ff734d62-1001-4201-adb5-789e0cdd311f",
+            "name": "Webhook",
+            "webhookId": "6e23aba0-815f-4909-8f46-1c6e19b15b57"
+        },
+        {
+            "parameters": {
+                "promptType": "define",
+                "text": "={{ $json.body.message }}",
+                "options": {
+                    "systemMessage": "You are a project identifier. Your ONLY job is to analyze the user's message and determine which project they are asking about.\n\nThe available projects are:\n- \"The Downtown Skyscraper\" which has the code 'Project-A'.\n- \"The Seaside Villa\" which has the code 'Project-B'.\n\nIf the user mentions the skyscraper, respond with ONLY the text: Project-A\nIf the user mentions the villa, respond with ONLY the text: Project-B\n\nIf you cannot determine which project they mean, or if they are just making small talk, respond with ONLY the text: respond normaly"
+                }
+            },
+            "type": "@n8n/n8n-nodes-langchain.agent",
+            "typeVersion": 2,
+            "position": [
+                0,
+                64
+            ],
+            "id": "ca8765e0-7b34-406e-a7fa-cdbefb2ca6aa",
+            "name": "AI Agent"
+        },
+        {
+            "parameters": {
+                "modelName": "models/gemini-2.5-flash-preview-04-17",
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+            "typeVersion": 1,
+            "position": [
+                -48,
+                432
+            ],
+            "id": "571288fb-df73-4143-bda1-55302b7ba6d5",
+            "name": "Google Gemini Chat Model",
+            "credentials": {
+                "googlePalmApi": {
+                    "id": "N12Ltv1DW0TN4fL2",
+                    "name": "Google Gemini(PaLM)easy"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "bd2e61bc-7757-4b1f-8a39-30664fbebcda",
+                            "name": "type",
+                            "value": "action",
+                            "type": "string"
+                        },
+                        {
+                            "id": "3f301c91-b4e8-4828-be22-9b8a735a18ec",
+                            "name": "content",
+                            "value": "https://touching-reasonably-rooster.ngrok-free.app/",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                1088,
+                -64
+            ],
+            "id": "d460ff64-c459-4a7a-913b-9f57bea7ec99",
+            "name": "Edit Fields2"
+        },
+        {
+            "parameters": {
+                "rules": {
+                    "values": [
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "leftValue": "={{ $json.output }}",
+                                        "rightValue": "Project-A",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "equals"
+                                        },
+                                        "id": "34dc7ce5-88db-46ee-bb9a-0c6aba7d4fb9"
+                                    }
+                                ],
+                                "combinator": "and"
+                            }
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "6bbf6303-e4ac-4d96-a1c9-b4729613a556",
+                                        "leftValue": "={{ $json.output }}",
+                                        "rightValue": "Project-B",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "equals",
+                                            "name": "filter.operator.equals"
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            }
+                        }
+                    ]
+                },
+                "options": {
+                    "fallbackOutput": "extra"
+                }
+            },
+            "type": "n8n-nodes-base.switch",
+            "typeVersion": 3.2,
+            "position": [
+                480,
+                144
+            ],
+            "id": "07b00c92-a43f-4453-8217-9542cc4c3d25",
+            "name": "Switch1"
+        },
+        {
+            "parameters": {
+                "respondWith": "allIncomingItems",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.respondToWebhook",
+            "typeVersion": 1.4,
+            "position": [
+                1648,
+                144
+            ],
+            "id": "196dc46c-12b6-4dbe-9a5e-8008ff39e402",
+            "name": "Respond to Webhook1"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "bd2e61bc-7757-4b1f-8a39-30664fbebcda",
+                            "name": "type",
+                            "value": "action",
+                            "type": "string"
+                        },
+                        {
+                            "id": "3f301c91-b4e8-4828-be22-9b8a735a18ec",
+                            "name": "content",
+                            "value": "https://youtube.com",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                1008,
+                208
+            ],
+            "id": "7f19fae6-951f-479f-a053-7be619aa0792",
+            "name": "Edit Fields3"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "49d1dc20-da1a-4db2-8fa9-685171ca9f52",
+                            "name": "type",
+                            "value": "text",
+                            "type": "string"
+                        },
+                        {
+                            "id": "849eba36-319a-4c2b-91b9-ad314e273eeb",
+                            "name": "content",
+                            "value": "sorry",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                1024,
+                464
+            ],
+            "id": "32f5a41f-8386-452d-a855-04fa3b2221fd",
+            "name": "Edit Fields4"
+        }
+    ],
+    "connections": {
+        "Webhook": {
+            "main": [
+                [
+                    {
+                        "node": "AI Agent",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "AI Agent": {
+            "main": [
+                [
+                    {
+                        "node": "Switch1",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Google Gemini Chat Model": {
+            "ai_languageModel": [
+                [
+                    {
+                        "node": "AI Agent",
+                        "type": "ai_languageModel",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Edit Fields2": {
+            "main": [
+                [
+                    {
+                        "node": "Respond to Webhook1",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Switch1": {
+            "main": [
+                [
+                    {
+                        "node": "Edit Fields2",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Edit Fields3",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Edit Fields4",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Edit Fields3": {
+            "main": [
+                [
+                    {
+                        "node": "Respond to Webhook1",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Edit Fields4": {
+            "main": [
+                [
+                    {
+                        "node": "Respond to Webhook1",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "pinData": {
+        "Webhook": [
+            {
+                "headers": {
+                    "host": "n8n.ai-eg.online",
+                    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+                    "content-length": "16",
+                    "accept": "*/*",
+                    "accept-encoding": "gzip, deflate, br, zstd",
+                    "accept-language": "en-US,en;q=0.9,ar;q=0.8",
+                    "content-type": "application/json",
+                    "origin": "null",
+                    "priority": "u=1, i",
+                    "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",
+                    "sec-ch-ua-mobile": "?0",
+                    "sec-ch-ua-platform": "\"Windows\"",
+                    "sec-fetch-dest": "empty",
+                    "sec-fetch-mode": "cors",
+                    "sec-fetch-site": "cross-site",
+                    "x-forwarded-for": "41.235.221.231",
+                    "x-forwarded-host": "n8n.ai-eg.online",
+                    "x-forwarded-proto": "https"
+                },
+                "params": {},
+                "query": {},
+                "body": {
+                    "message": "hi"
+                },
+                "webhookUrl": "https://n8n.ai-eg.online/webhook/49ef809d-d316-4068-ba46-a254084128ce",
+                "executionMode": "production"
+            }
+        ]
+    },
+    "meta": {
+        "templateCredsSetupCompleted": true,
+        "instanceId": "3ac052d630e7023479176857caf6e2546624f044ad0aa1615faaabfb909cb511"
+    }
+}
